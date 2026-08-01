@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wendel | Portfolio 3D</title>
+    <meta name="description" content="Portfolio de Wendel - Frontend Developer & UI/UX Designer">
+    <link rel="icon" href="assets/img/favicon.png" type="image/png">
+
+    <!-- Preload Critical Fonts -->
+    <link rel="preload" href="assets/fonts/ClashDisplay-Bold.ttf" as="font" type="font/ttf" crossorigin>
+
+    <!-- Three.js Import Map -->
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://cdn.jsdelivr.net/npm/three@latest/build/three.module.js",
+                "three/addons/": "https://cdn.jsdelivr.net/npm/three@latest/examples/jsm/"
+            }
+        }
+    </script>
+
+    <!-- Google Fonts: Orbitron & Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@400;600;700;900&display=swap" rel="stylesheet">
+
+    <!-- Animation Libraries (GSAP, ScrollTrigger, ScrollSmoother, SplitText, Anime.js) -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.1/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.1/dist/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.1/dist/ScrollSmoother.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.1/dist/SplitText.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.2/lib/anime.min.js"></script>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- PRELOADER DO PROJETO/SITE -->
+    <div id="preloader">
+      <div class="preloader-text">0%</div>
+    </div>
+
+    <!-- HEADER SUPERIOR FIXADO (DO BACKAP) -->
+    <header class="site-header" id="site-header">
+        <a href="#hero" class="brand-logo" id="brand-logo" aria-label="Wendel Portfolio Home">
+            <svg class="signature-svg" width="150" height="38" viewBox="0 0 150 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <text x="0" y="24" font-family="'Orbitron', sans-serif" font-weight="900" font-size="22" fill="#ffffff" letter-spacing="1.5">WENDEL<tspan fill="#e05a47">.</tspan></text>
+                <path d="M 2 29 Q 45 34 135 28 T 148 24" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" opacity="0.95"/>
+            </svg>
+        </a>
+        <button class="menu-toggle" id="menu-toggle" aria-label="Abrir Menu">
+            <span class="bar line-1"></span>
+            <span class="bar line-2"></span>
+        </button>
+    </header>
+
+    <!-- MENU DRAWER FULLSCREEN OVERLAY (DO BACKAP) -->
+    <div class="nav-overlay" id="nav-overlay">
+        <div class="nav-content">
+            <ul class="nav-links">
+                <li><a href="#hero" class="nav-link active" data-target="hero"><span class="nav-num">01</span><span class="nav-text">INÍCIO</span></a></li>
+                <li><a href="#secao-competencias" class="nav-link" data-target="competencias"><span class="nav-num">02</span><span class="nav-text">SKILLS</span></a></li>
+                <li><a href="#projects" class="nav-link" data-target="projects"><span class="nav-num">03</span><span class="nav-text">PROJETOS</span></a></li>
+                <li><a href="https://wa.me/5577988901719" target="_blank" class="nav-link" data-target="contact"><span class="nav-num">04</span><span class="nav-text">CONTATO</span></a></li>
+            </ul>
+            <div class="nav-footer">
+                <span class="nav-footer-tag">FRONTEND DEVELOPER &amp; UI/UX DESIGNER</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- GSAP SCROLLSMOOTHER CONTAINER -->
+    <div id="smooth-wrapper">
+      <div id="smooth-content">
+        <main>
+          <!-- HERO SECTION 3D (DO BACKAP: NOSSO HERO 100% INTACTO!) -->
+          <section class="hero hero-section" id="hero">
+            <div class="hero-title-layer">
+                <h1 class="hero-title" id="hero-title">WENDEL</h1>
+            </div>
+
+            <div id="canvas-container" class="canvas-container">
+                <canvas id="webgl-canvas"></canvas>
+            </div>
+
+            <div class="hero-bottom-bar">
+                <div class="hero-buttons">
+                    <a href="https://wa.me/5577988901719" target="_blank" class="btn btn-interactive btn-primary" id="btn-contato" aria-label="Entre em contato via WhatsApp">
+                        <span class="btn-text">contato</span>
+                    </a>
+                    <a href="assets/curriculo.pdf" target="_blank" download="Curriculo_Wendel.pdf" class="btn btn-interactive btn-secondary" id="btn-curriculo" aria-label="Baixar Currículo">
+                        <span class="btn-text">curriculo</span>
+                    </a>
+                </div>
+                <div class="hero-subtitle">
+                    <p class="subtitle-line-1">Frontend Developer &amp;</p>
+                    <p class="subtitle-line-2">UI/UX Designer</p>
+                </div>
+            </div>
+
+            <!-- TRANSIÇÃO DAS 11 COLUNAS PRETAS DO PROJETO/SITE -->
+            <div class="transition">
+              <div></div><div></div><div></div><div></div><div></div>
+              <div></div><div></div><div></div><div></div><div></div><div></div>
+            </div>
+
+            <!-- TEXTOS DE TRANSIÇÃO (Sob as colunas da transição) -->
+            <div class="textoTransicao">
+              <p class="textoAnimado2">
+                Meu trabalho vai além de desenvolver interfaces. Construo experiências digitais escaláveis que combinam arquitetura sólida, design refinado e performance para criar produtos preparados para crescer.
+              </p>
+            </div>
+          </section>
+
+        </main>
+
+        <!-- 2. SEÇÃO VÍDEO — clip-path reveal ao entrar na viewport -->
+        <section class="secao-video" id="video-showcase">
+          <div class="video-reveal-wrapper" id="video-reveal">
+            <video id="projeto-video" loop muted autoplay playsinline preload="metadata" poster="assets/img/ats.svg">
+              <source src="assets/img/ats.mp4" type="video/mp4">
+            </video>
+            <!-- Botão Play/Pause -->
+            <button class="video-play-btn" id="video-play-btn" aria-label="Play/Pause">
+              <!-- Ícone Play -->
+              <span class="play-icon">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M8 5v14l11-7z"/>
+                </svg>
+              </span>
+              <!-- Ícone Pause -->
+              <span class="pause-icon">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                </svg>
+              </span>
+            </button>
+          </div>
+        </section>
+
+        <!-- 3. SEÇÃO COMPETÊNCIAS + FORMAÇÃO -->
+        <section class="secao-competencias" id="secao-competencias">
+          <div class="comp-header">
+            <h2 class="textoAnimado">Skills &amp; Tecnologias</h2>
+            <p class="comp-subtitle">Linguagens, frameworks e ferramentas que utilizo no dia a dia</p>
+          </div>
+
+          <!-- ARCO DE SKILLS CIRCULARES (ESTILO ICON WAVE DE PROJETINHO-V2) -->
+          <div class="skills-arc-container">
+            <div class="skills-fade-left"></div>
+            <div class="skills-fade-right"></div>
+            <div class="skills-arc-track">
+              <div class="skill-badge arc-pos-1">
+                <svg viewBox="0 0 128 128"><path fill="#E34F26" d="M18.8 11.2h90.4l-8.2 92.4-37 10.3-37-10.3z"/><path fill="#EF652A" d="M64 104.5l30.6-8.5 7.1-79.8H64z"/><path fill="#FFF" d="M64 53.6H46.2l-1.2-13.8H64V26.2H30.4l.4 4.8 3.3 36.4H64zM64 80.6l-.1.1-13.6-3.7-.9-9.8H35.6l1.7 19.3 26.6 7.4.1-.2z"/><path fill="#EEE" d="M64 53.6v13.6h16.6l-1.6 17.1-15 4.1v13.9l26.7-7.4 3.4-38.3H64zM64 26.2v13.6h31.2l1.2-13.6z"/></svg>
+                <span class="skill-name">HTML5</span>
+              </div>
+              <div class="skill-badge arc-pos-2">
+                <svg viewBox="0 0 128 128"><path fill="#1572B6" d="M18.8 11.2h90.4l-8.2 92.4-37 10.3-37-10.3z"/><path fill="#33A9DC" d="M64 104.5l30.6-8.5 7.1-79.8H64z"/><path fill="#FFF" d="M64 53.6H46.2l-1.2-13.8H64V26.2H30.4l.4 4.8 3.3 36.4H64zM64 80.6l-.1.1-13.6-3.7-.9-9.8H35.6l1.7 19.3 26.6 7.4.1-.2z"/><path fill="#EEE" d="M64 53.6v13.6h16.6l-1.6 17.1-15 4.1v13.9l26.7-7.4 3.4-38.3H64zM64 26.2v13.6h31.2l1.2-13.6z"/></svg>
+                <span class="skill-name">CSS3</span>
+              </div>
+              <div class="skill-badge arc-pos-3">
+                <svg viewBox="0 0 128 128"><rect width="128" height="128" fill="#F7DF1E" rx="16"/><path fill="#000" d="M67.3 103.9c2.3 3.8 5.7 6.6 11.3 6.6 4.7 0 7.7-2.3 7.7-5.5 0-3.8-3.1-5.2-8.3-7.5l-2.9-1.2c-8.3-3.5-13.8-8-13.8-17.5 0-9.7 7.5-17.1 19.3-17.1 8.5 0 14.5 3.1 18.4 10.2l-9 5.8c-2.1-3.6-4.9-5.1-9.3-5.1-4.2 0-6.9 2-6.9 4.8 0 3.3 2.6 4.6 7.2 6.6l2.9 1.2c9.8 4.2 15.1 8.5 15.1 18.2 0 11.3-8.8 17.9-20.9 17.9-11.4 0-18.4-5.6-21.9-12.7l9.1-4.7zM24.7 104.2c1.7 3.1 4 5.3 7.6 5.3 3.9 0 6.3-1.6 6.3-7.8V62.4h12.5v39.7c0 12.8-7.4 18.4-18.3 18.4-9.3 0-15.1-4.9-17.8-10.7l9.7-5.6z"/></svg>
+                <span class="skill-name">JAVASCRIPT</span>
+              </div>
+              <div class="skill-badge arc-pos-4">
+                <svg viewBox="0 0 128 128"><rect width="128" height="128" fill="#3178C6" rx="16"/><path fill="#FFF" d="M70.5 73.1h15.2v9.3H70.5v28.8H58.9V82.4H43.7v-9.3h26.8zm21.4 20.3c2.4 2.8 5.8 4.4 10.1 4.4 4.2 0 6.8-1.7 6.8-4.2 0-2.8-2.6-3.9-7.2-5.5l-2.5-.9c-7.2-2.6-11.7-6.1-11.7-13.1 0-7.3 5.9-13.1 16-13.1 7.2 0 12.4 2.5 15.9 7.9l-7.7 5.6c-2.1-3.1-4.8-4.3-8.5-4.3-3.6 0-5.7 1.6-5.7 3.8 0 2.5 2.1 3.5 6.4 5l2.5.9c8.4 3 12.8 6.4 12.8 13.5 0 8.6-6.8 13.7-17.6 13.7-9.8 0-16.1-4.3-19.4-10.7l8.1-4.8z"/></svg>
+                <span class="skill-name">TYPESCRIPT</span>
+              </div>
+              <div class="skill-badge arc-pos-5">
+                <svg viewBox="0 0 100 100" fill="none"><ellipse cx="50" cy="50" rx="42" ry="16" stroke="#61DAFB" stroke-width="5" transform="rotate(0 50 50)"/><ellipse cx="50" cy="50" rx="42" ry="16" stroke="#61DAFB" stroke-width="5" transform="rotate(60 50 50)"/><ellipse cx="50" cy="50" rx="42" ry="16" stroke="#61DAFB" stroke-width="5" transform="rotate(120 50 50)"/><circle cx="50" cy="50" r="8" fill="#61DAFB"/></svg>
+                <span class="skill-name">REACT</span>
+              </div>
+              <div class="skill-badge arc-pos-6">
+                <svg viewBox="0 0 100 100"><path d="M50 8L10 28l40 20 40-20L50 8zM10 72l40 20 40-20M10 50l40 20 40-20" stroke="#FFF" stroke-width="5" fill="none"/></svg>
+                <span class="skill-name">THREE.JS</span>
+              </div>
+              <div class="skill-badge arc-pos-7">
+                <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="44" fill="#88CE02"/><path fill="none" stroke="#FFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" d="M28 50l14 14 30-30"/></svg>
+                <span class="skill-name">GSAP</span>
+              </div>
+              <div class="skill-badge arc-pos-8">
+                <svg viewBox="0 0 128 128"><path fill="#5FA04E" d="M64 14L14 43v58l50 29 50-29V43L64 14zm-5 77l-21-12V55l21 12v24zm31-12l-21 12V67l21-12v24z"/></svg>
+                <span class="skill-name">NODE.JS</span>
+              </div>
+              <div class="skill-badge arc-pos-9">
+                <svg viewBox="0 0 100 100">
+                  <rect width="100" height="100" fill="#FFFFFF" rx="22"/>
+                  <path fill="#3776AB" d="M49.5 10c-18.6 0-17.4 8-17.4 8v8.3h17.7v2.6H25.2S8.5 27 8.5 45.6c0 18.6 14.5 17.9 14.5 17.9h8.6v-12.2s-.5-14.5 14.4-14.5h24.7s13.8.2 13.8-13.5c0-13.8-12-13.2-12-13.2H49.5z"/>
+                  <circle cx="41.7" cy="19.6" r="3.2" fill="#FFFFFF"/>
+                  <path fill="#FFD43B" d="M50.5 90c18.6 0 17.4-8 17.4-8v-8.3H50.2v-2.6h24.6s16.7 1.9 16.7-16.7c0-18.6-14.5-17.9-14.5-17.9h-8.6v12.2s.5 14.5-14.4 14.5H29.3s-13.8-.2-13.8 13.5c0 13.8 12 13.2 12 13.2h23z"/>
+                  <circle cx="58.3" cy="80.4" r="3.2" fill="#FFFFFF"/>
+                </svg>
+                <span class="skill-name">PYTHON</span>
+              </div>
+              <div class="skill-badge arc-pos-10">
+                <svg viewBox="0 0 100 100"><rect width="100" height="100" fill="#00ADD8" rx="16"/><text x="50" y="66" fill="#FFF" font-family="system-ui, sans-serif" font-weight="bold" font-size="46" text-anchor="middle">GO</text></svg>
+                <span class="skill-name">GO</span>
+              </div>
+              <div class="skill-badge arc-pos-11">
+                <svg viewBox="0 0 100 100"><rect width="100" height="60" y="20" fill="#777BB4" rx="30"/><text x="50" y="60" fill="#FFF" font-family="system-ui, sans-serif" font-weight="bold" font-size="34" text-anchor="middle">php</text></svg>
+                <span class="skill-name">PHP</span>
+              </div>
+              <div class="skill-badge arc-pos-12">
+                <svg viewBox="0 0 100 100"><polygon points="50,6 90,28 90,72 50,94 10,72 10,28" fill="#68217A"/><text x="50" y="64" fill="#FFF" font-family="system-ui, sans-serif" font-weight="bold" font-size="40" text-anchor="middle">C#</text></svg>
+                <span class="skill-name">C#</span>
+              </div>
+              <div class="skill-badge arc-pos-13">
+                <svg viewBox="0 0 100 100"><polygon points="50,6 90,28 90,72 50,94 10,72 10,28" fill="#00599C"/><text x="50" y="64" fill="#FFF" font-family="system-ui, sans-serif" font-weight="bold" font-size="34" text-anchor="middle">C++</text></svg>
+                <span class="skill-name">C++</span>
+              </div>
+              <div class="skill-badge arc-pos-14">
+                <svg viewBox="0 0 100 100" fill="#06B6D4"><path d="M50 20c-13.3 0-21.7 6.7-25 20 5-6.7 10.8-9.2 17.5-7.5 3.8 1 6.5 3.7 9.5 6.8C56.9 44.2 62.6 50 75 50c13.3 0 21.7-6.7 25-20-5 6.7-10.8 9.2-17.5 7.5-3.8-1-6.5-3.7-9.5-6.8C68.1 25.8 62.4 20 50 20zm-25 30c-13.3 0-21.7 6.7-25 20 5-6.7 10.8-9.2 17.5-7.5 3.8 1 6.5 3.7 9.5 6.8C31.9 74.2 37.6 80 50 80c13.3 0 21.7-6.7 25-20-5 6.7-10.8 9.2-17.5 7.5-3.8-1-6.5-3.7-9.5-6.8C43.1 55.8 37.4 50 25 50z"/></svg>
+                <span class="skill-name">TAILWIND</span>
+              </div>
+              <div class="skill-badge arc-pos-15">
+                <svg viewBox="0 0 100 100"><path fill="#EA4C89" d="M33 100a17 17 0 0 1-17-17 17 17 0 0 1 17-17h17v17a17 17 0 0 1-17 17z"/><path fill="#1ABCFE" d="M16 50a17 17 0 0 1 17-17h17v34H33a17 17 0 0 1-17-17z"/><path fill="#0ACF83" d="M16 17a17 17 0 0 1 17-17h17v34H33a17 17 0 0 1-17-17z"/><path fill="#FF7262" d="M50 0h17a17 17 0 0 1 17 17 17 17 0 0 1-17 17H50V0z"/><path fill="#F24E1E" d="M67 50a17 17 0 1 1 0-34 17 17 0 0 1 0 34z"/></svg>
+                <span class="skill-name">FIGMA</span>
+              </div>
+              <div class="skill-badge arc-pos-16">
+                <svg viewBox="0 0 128 128" fill="#F05032"><path d="M125.6 58.3L69.7 2.4c-3.2-3.2-8.4-3.2-11.7 0L43.2 17.2l14.7 14.7c3.4-1.2 7.4-.3 10 2.3 2.7 2.7 3.5 6.6 2.4 10l14.2 14.2c3.4-1.2 7.4-.3 10 2.3 3.8 3.8 3.8 9.9 0 13.7-3.8 3.8-9.9 3.8-13.7 0-2.8-2.8-3.6-6.8-2.4-10.3L64 49.7v36.1c.9.4 1.7 1 2.4 1.7 3.8 3.8 3.8 9.9 0 13.7-3.8 3.8-9.9 3.8-13.7 0-3.8-3.8-3.8-9.9 0-13.7 1-1 2-1.6 3.3-2V48.5c-1.2-.4-2.3-1-3.3-2-2.7-2.7-3.5-6.6-2.4-10L40.3 21.8 5.6 56.5c-3.2 3.2-3.2 8.4 0 11.7l55.9 55.9c3.2 3.2 8.4 3.2 11.7 0l52.4-54.1c3.2-3.3 3.2-8.5 0-11.7z"/></svg>
+                <span class="skill-name">GIT</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- FORMAÇÃO DEBAIXO DO ARCO DE SKILLS (ESTILO CARDS LOGO DE FORMAÇÃO) -->
+          <div class="formacao-wrapper" id="comp-formacao">
+             <h2 class="textoAnimado">Formação &amp; Tecnologias</h2>
+            <p class="comp-subtitle">Formação, cursos e certificações que possuo</p>
+            <div class="formacao-grid">
+              <!-- CARD 1: UNINTER (FACULDADE) -->
+              <div class="form-card">
+                <div class="form-card-logo">
+                  <svg viewBox="0 0 180 40"><text x="90" y="27" fill="#FFF" font-family="system-ui, sans-serif" font-weight="bold" font-size="22" text-anchor="middle">UNINTER</text></svg>
+                </div>
+                <div class="form-card-hover">
+                  <span class="form-hover-ano">2025 – 2027</span>
+                  <h4 class="form-hover-titulo">Ciência de Dados (Graduação)</h4>
+                  <p class="form-hover-desc">Faculdade Uninter - Ensino Superior</p>
+                </div>
+              </div>
+
+              <!-- CARD 2: ALURA -->
+              <div class="form-card">
+                <div class="form-card-logo">
+                  <svg viewBox="0 0 140 40"><text x="70" y="27" fill="#FFF" font-family="system-ui, sans-serif" font-weight="bold" font-size="28" text-anchor="middle">alura</text></svg>
+                </div>
+                <div class="form-card-hover">
+                  <span class="form-hover-ano">2024 – 2025</span>
+                  <h4 class="form-hover-titulo">Linguagem Go (50h) &amp; Web (53h)</h4>
+                  <p class="form-hover-desc">Análise de Dados, HTML/CSS e Backend</p>
+                </div>
+              </div>
+
+              <!-- CARD 3: DIO -->
+              <div class="form-card">
+                <div class="form-card-logo">
+                  <svg viewBox="0 0 120 40"><text x="60" y="27" fill="#FFF" font-family="system-ui, sans-serif" font-weight="bold" font-size="24" text-anchor="middle">dio.</text></svg>
+                </div>
+                <div class="form-card-hover">
+                  <span class="form-hover-ano">2024</span>
+                  <h4 class="form-hover-titulo">Bootcamps &amp; Software Dev</h4>
+                  <p class="form-hover-desc">Digital Innovation One - Prática &amp; Projetos</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- SEÇÃO DE PROJETOS DO PROJETO/SITE -->
+        <section class="projetos" id="projects">
+          <div class="titulo">
+            <h2 class="textoAnimado">Projetos Recentes</h2>
+            <p>
+              Cada projeto é pensado do zero, unindo estratégia, design e
+              desenvolvimento.
+            </p>
+          </div>
+          <a target="_blank" href="https://projetinho-v2.vercel.app">
+            <div class="projeto">
+              <img src="assets/img/ats.svg" alt="Projeto ATS" loading="lazy" decoding="async" />
+            </div>
+          </a>
+          <a target="_blank" href="https://akira-site-three.vercel.app">
+            <div class="projeto">
+              <img src="assets/img/akira.svg" alt="Projeto Akira" loading="lazy" decoding="async" />
+            </div>
+          </a>
+        </section>
+
+        <!-- CENA 3D DIAMANTE + RODAPÉ COMPLETO DO PROJETO/SITE -->
+        <div class="animations">
+          <section class="div3d">
+            <h2>Design Único</h2>
+            <h2>Animações</h2>
+            <h2>Otimização</h2>
+          </section>
+
+          <footer class="footer" id="about">
+            <div class="webhubFooter">
+              <h2><b>WEN</b>DEL</h2>
+              <div>
+                <p>© 2026 Wendell Motta Silva - All rights reserved</p>
+                <a href="#"><p>Política de Privacidade</p></a>
+              </div>
+            </div>
+            <div class="conteudo">
+              <h2>Seu negócio é único, seu projeto também precisa ser</h2>
+
+              <div class="botoes">
+                <a
+                  href="https://mail.google.com/mail/?view=cm&fs=1&to=wendellmottasilva356@gmail.com"
+                  target="_blank"
+                  class="botaoPrimario"
+                >
+                  Enviar E-mail
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                </a>
+                <a
+                  href="https://wa.me/5577988901719"
+                  target="_blank"
+                  class="botaoSecundario"
+                >
+                  Entrar em contato
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+                </a>
+              </div>
+            </div>
+          </footer>
+        </div>
+
+    <!-- JavaScript Logic -->
+    <script type="module" src="script.js?v=2000"></script>
+</body>
+</html>
