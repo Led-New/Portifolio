@@ -1,0 +1,6 @@
+{
+  "name": "Passada — Banco moderno",
+  "description": "A Passada dá visão e controle para você agir com confiança: poupança automática, rendimento de verdade e clareza sobre cada real.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
