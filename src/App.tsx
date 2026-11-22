@@ -15,15 +15,19 @@ import {
   subscribeTicker,
 } from './scenes';
 
-const LOGO_NAMES = [
-  'Northwind',
-  'Ledgerly',
-  'Vaulted',
-  'Paycore',
-  'Finova',
-  'Quanta',
-  'Settle',
-  'Corvus',
+const TECH_STACK_ITEMS = [
+  'React',
+  'Three.js',
+  'TypeScript',
+  'WebGL',
+  'Next.js',
+  'Tailwind CSS',
+  'Creative Dev',
+  'GSAP Motion',
+  '3D Shaders',
+  'UI/UX Design',
+  'Clean Code',
+  'Performance 99+',
 ];
 
 const SHOWCASE_ITEMS = [
@@ -79,21 +83,59 @@ function BarChartIcon({
 }
 
 function LogoMark({ index }: { index: number }) {
-  const mod = index % 5;
+  const mod = index % 6;
   return (
     <svg
-      width={36}
-      height={36}
+      width={22}
+      height={22}
       viewBox="0 0 24 24"
-      fill="currentColor"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
       aria-hidden="true"
+      style={{ opacity: 0.85, flexShrink: 0 }}
     >
-      {mod === 0 && <circle cx="12" cy="12" r="9" />}
-      {mod === 1 && <rect x="4" y="4" width="16" height="16" rx="5" />}
-      {mod === 2 && <path d="M12 2.5 21 20.5 3 20.5Z" />}
-      {mod === 3 && <path d="M12 3a9 9 0 1 0 9 9h-9Z" />}
+      {mod === 0 && (
+        <>
+          <polyline points="16 18 22 12 16 6" />
+          <polyline points="8 6 2 12 8 18" />
+        </>
+      )}
+      {mod === 1 && (
+        <>
+          <path d="m21.12 6.4-6-3.4a2 2 0 0 0-2 0l-6 3.4a2 2 0 0 0-1 1.7v6.8a2 2 0 0 0 1 1.7l6 3.4a2 2 0 0 0 2 0l6-3.4a2 2 0 0 0 1-1.7V8.1a2 2 0 0 0-1-1.7z" />
+          <path d="M3.27 6.96 12 12.01l8.73-5.05" />
+          <path d="M12 22.08V12" />
+        </>
+      )}
+      {mod === 2 && (
+        <path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3z" />
+      )}
+      {mod === 3 && (
+        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+      )}
       {mod === 4 && (
-        <path d="M12 2l2.6 6.4L21 9l-5 4.2L17.8 20 12 16.3 6.2 20 8 13.2 3 9l6.4-.6z" />
+        <>
+          <polygon points="12 2 2 7 12 12 22 7 12 2" />
+          <polyline points="2 17 12 22 22 17" />
+          <polyline points="2 12 12 17 22 12" />
+        </>
+      )}
+      {mod === 5 && (
+        <>
+          <rect x="4" y="4" width="16" height="16" rx="2" />
+          <rect x="9" y="9" width="6" height="6" />
+          <line x1="9" y1="1" x2="9" y2="4" />
+          <line x1="15" y1="1" x2="15" y2="4" />
+          <line x1="9" y1="20" x2="9" y2="23" />
+          <line x1="15" y1="20" x2="15" y2="23" />
+          <line x1="20" y1="9" x2="23" y2="9" />
+          <line x1="20" y1="14" x2="23" y2="14" />
+          <line x1="1" y1="9" x2="4" y2="9" />
+          <line x1="1" y1="14" x2="4" y2="14" />
+        </>
       )}
     </svg>
   );
@@ -494,7 +536,7 @@ export default function App() {
   // 3. Continuous Ticker Animations (Hero Shrink, Logo Strips, Showcase Spring, Portfolio 3D, Chain & Heart Parallax)
   // ==========================================================================
   useEffect(() => {
-    const ONE_SET = 100 / 6;
+    const ONE_SET = 100 / 4;
     let s1 = 0;
     let s2 = 0;
     let portfolioCurrent = 0;
@@ -503,8 +545,8 @@ export default function App() {
       const scrollY = getScrollY();
       const vh = Math.max(1, window.innerHeight);
 
-      // A. Hero shrink & clip-path
-      if (heroSectionRef.current) {
+      // A. Hero shrink & clip-path (only active when hero is near screen)
+      if (heroSectionRef.current && scrollY < vh * 1.5) {
         const sectionTop = heroSectionRef.current.getBoundingClientRect().top;
         const targetP = clamp01(-sectionTop / (vh * 0.6));
         heroProgressRef.current += (targetP - heroProgressRef.current) * 0.18;
@@ -569,61 +611,64 @@ export default function App() {
         scrimEl.style.transform = `scaleY(${pos.toFixed(4)})`;
       }
 
-      // D. Portfolio 3D Cylinder Stack
+      // D. Portfolio 3D Cylinder Stack (Optimized: only animate when in view)
       if (portfolioSectionRef.current) {
         const rect = portfolioSectionRef.current.getBoundingClientRect();
         const sectionTop = rect.top;
         const sectionHeight = Math.max(1, portfolioSectionRef.current.offsetHeight);
-        const p = clamp01(-sectionTop / Math.max(1, sectionHeight - vh));
-        const count = PORTFOLIO_ITEMS.length;
-        const OVERSCAN = 0.2;
-        const target = p * (count - 1 + OVERSCAN * 2) - OVERSCAN;
-        portfolioCurrent += (target - portfolioCurrent) * 0.14;
-        const f = portfolioCurrent;
 
-        const RADIUS = 1350;
-        const STEP = 27;
+        if (sectionTop <= vh + 100 && sectionTop >= -sectionHeight - 100) {
+          const p = clamp01(-sectionTop / Math.max(1, sectionHeight - vh));
+          const count = PORTFOLIO_ITEMS.length;
+          const OVERSCAN = 0.2;
+          const target = p * (count - 1 + OVERSCAN * 2) - OVERSCAN;
+          portfolioCurrent += (target - portfolioCurrent) * 0.14;
+          const f = portfolioCurrent;
 
-        for (let i = 0; i < count; i++) {
-          const rel = i - f;
-          const d = Math.abs(rel);
+          const RADIUS = 1350;
+          const STEP = 27;
 
-          const bgImg = portfolioBgRefs.current[i];
-          if (bgImg) {
-            bgImg.style.opacity = `${Math.max(0, 1 - d)}`;
-            bgImg.style.transform = `translateY(${(i - f) * 22}%) scale(1.6)`;
+          for (let i = 0; i < count; i++) {
+            const rel = i - f;
+            const d = Math.abs(rel);
+
+            const bgImg = portfolioBgRefs.current[i];
+            if (bgImg) {
+              bgImg.style.opacity = `${Math.max(0, 1 - d)}`;
+              bgImg.style.transform = `translateY(${(i - f) * 22}%) scale(1.6)`;
+            }
+
+            const cardEl = portfolioCardRefs.current[i];
+            if (cardEl) {
+              const rad = (rel * STEP * Math.PI) / 180;
+              const y = RADIUS * Math.sin(rad);
+              const z = RADIUS * Math.cos(rad) - RADIUS;
+              const op = d > 3.6 ? 0 : Math.max(0, 1 - d * 0.24);
+              cardEl.style.transform = `translate3d(0, ${y.toFixed(
+                2
+              )}px, ${z.toFixed(2)}px) rotateX(${(rel * STEP).toFixed(
+                2
+              )}deg) translate(-50%, -50%)`;
+              cardEl.style.opacity = `${op}`;
+            }
+
+            const veilEl = portfolioVeilRefs.current[i];
+            if (veilEl) {
+              veilEl.style.opacity = `${Math.min(0.35, d * 0.22)}`;
+            }
           }
 
-          const cardEl = portfolioCardRefs.current[i];
-          if (cardEl) {
-            const rad = (rel * STEP * Math.PI) / 180;
-            const y = RADIUS * Math.sin(rad);
-            const z = RADIUS * Math.cos(rad) - RADIUS;
-            const op = d > 3.6 ? 0 : Math.max(0, 1 - d * 0.24);
-            cardEl.style.transform = `translate3d(0, ${y.toFixed(
-              2
-            )}px, ${z.toFixed(2)}px) rotateX(${(rel * STEP).toFixed(
-              2
-            )}deg) translate(-50%, -50%)`;
-            cardEl.style.opacity = `${op}`;
+          const focusedIdx = Math.max(
+            0,
+            Math.min(count - 1, Math.round(portfolioCurrent))
+          );
+          if (portfolioIndexRef.current) {
+            const numStr = String(focusedIdx + 1).padStart(2, '0');
+            portfolioIndexRef.current.textContent = `${numStr} / 06`;
           }
-
-          const veilEl = portfolioVeilRefs.current[i];
-          if (veilEl) {
-            veilEl.style.opacity = `${Math.min(0.35, d * 0.22)}`;
+          if (portfolioNameRef.current) {
+            portfolioNameRef.current.textContent = PORTFOLIO_ITEMS[focusedIdx].name;
           }
-        }
-
-        const focusedIdx = Math.max(
-          0,
-          Math.min(count - 1, Math.round(portfolioCurrent))
-        );
-        if (portfolioIndexRef.current) {
-          const numStr = String(focusedIdx + 1).padStart(2, '0');
-          portfolioIndexRef.current.textContent = `${numStr} / 06`;
-        }
-        if (portfolioNameRef.current) {
-          portfolioNameRef.current.textContent = PORTFOLIO_ITEMS[focusedIdx].name;
         }
       }
 
@@ -1015,8 +1060,8 @@ export default function App() {
                     }}
                     className="hero-stat-item"
                   >
-                    <span className="hero-stat-val">4,9</span>
-                    <span className="hero-stat-label">Avaliações</span>
+                    <span className="hero-stat-val">100%</span>
+                    <span className="hero-stat-label">Qualidade & Foco</span>
                   </li>
                   <li
                     ref={(el) => {
@@ -1024,8 +1069,8 @@ export default function App() {
                     }}
                     className="hero-stat-item"
                   >
-                    <span className="hero-stat-val">30k</span>
-                    <span className="hero-stat-label">Clientes ativos</span>
+                    <span className="hero-stat-val">6+</span>
+                    <span className="hero-stat-label">Cases em destaque</span>
                   </li>
                   <li
                     ref={(el) => {
@@ -1033,8 +1078,8 @@ export default function App() {
                     }}
                     className="hero-stat-item"
                   >
-                    <span className="hero-stat-val">15k</span>
-                    <span className="hero-stat-label">Feedbacks positivos</span>
+                    <span className="hero-stat-val">99+</span>
+                    <span className="hero-stat-label">Score Lighthouse</span>
                   </li>
                 </ul>
 
@@ -1074,8 +1119,8 @@ export default function App() {
           </div>
         </section>
 
-        {/* 2. FAIXA DE LOGOS */}
-        <section className="logos-section" aria-label="Parceiros">
+        {/* 2. FAIXA DE TECNOLOGIAS & SKILLS */}
+        <section className="logos-section" aria-label="Tecnologias e Habilidades">
           <div className="logos-container">
             {[0, 1].map((stripIdx) => (
               <div key={stripIdx} className="logo-strip">
@@ -1083,9 +1128,9 @@ export default function App() {
                   ref={stripIdx === 0 ? logoTrack1Ref : logoTrack2Ref}
                   className="logo-track"
                 >
-                  {Array.from({ length: 6 }).map((_, copyIdx) =>
-                    LOGO_NAMES.map((name, i) => {
-                      const globalIdx = copyIdx * LOGO_NAMES.length + i;
+                  {Array.from({ length: 4 }).map((_, copyIdx) =>
+                    TECH_STACK_ITEMS.map((name, i) => {
+                      const globalIdx = copyIdx * TECH_STACK_ITEMS.length + i;
                       return (
                         <div key={`${copyIdx}-${i}`} className="logo-item">
                           <LogoMark index={globalIdx} />
@@ -1234,9 +1279,9 @@ export default function App() {
                     color: 'rgba(255, 255, 255, 0.55)',
                   }}
                 >
-                  Clientes & Parceiros
+                  Tecnologias & Skills
                 </span>
-                <span className="stat-big-num">30+</span>
+                <span className="stat-big-num">15+</span>
               </article>
             </div>
           </div>

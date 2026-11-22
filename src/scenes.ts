@@ -170,7 +170,7 @@ export function createGradientScene(
   const seed = opts.seed ?? 0;
 
   const renderer = createWebGL1OrFallback({ canvas, antialias: false });
-  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
   renderer.setPixelRatio(dpr);
 
   const scene = new THREE.Scene();
@@ -213,6 +213,7 @@ export function createGradientScene(
 
   return () => {
     ro.disconnect();
+    io.disconnect();
     geo.dispose();
     mat.dispose();
     renderer.dispose();
@@ -363,11 +364,11 @@ export function createPlasmaScene(
     colOuter: '#242c9e',
     coreColor: '#a3a6ff',
     coreHalo: '#5f5cff',
-    filaments: 60,
-    sparks: 700,
+    filaments: 48,
+    sparks: 400,
     spread: 2.65,
     curl: 0,
-    segments: 64,
+    segments: 48,
     bendCfg: 0.55,
     tipFade: 0.14,
     lineBright: 1.1,
@@ -376,8 +377,8 @@ export function createPlasmaScene(
     colPink: '#e6ecff',
   };
 
-  const dpr = window.devicePixelRatio || 1;
-  const renderer = createWebGL1OrFallback({ canvas, antialias: true });
+  const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+  const renderer = createWebGL1OrFallback({ canvas, antialias: true, powerPreference: 'high-performance' });
   renderer.setPixelRatio(dpr);
   renderer.setClearColor(0x000000, 1);
 
@@ -676,14 +677,16 @@ export function createPlasmaScene(
     const rect = parent.getBoundingClientRect();
     const w = Math.max(1, rect.width || window.innerWidth);
     const h = Math.max(1, rect.height || window.innerHeight);
-    const curDpr = window.devicePixelRatio || 1;
+    const curDpr = Math.min(window.devicePixelRatio || 1, 1.5);
     renderer.setPixelRatio(curDpr);
     renderer.setSize(w, h, false);
-    composer.setSize(w, h);
+    const compW = Math.min(w, 1920);
+    const compH = Math.min(h, 1080);
+    composer.setSize(compW, compH);
     camera.aspect = w / h;
     camera.updateProjectionMatrix();
     lineUniforms.uAspect.value = w / h;
-    sparkUniforms.uPixelRatio.value = Math.min(curDpr, 2);
+    sparkUniforms.uPixelRatio.value = curDpr;
   };
 
   resize();
@@ -728,9 +731,18 @@ export function createPlasmaScene(
   let introStartMs: number | null = null;
   let spin = 0;
 
+  // Visibility tracking via IntersectionObserver
+  let isVisible = true;
+  const io = new IntersectionObserver(
+    ([entry]) => {
+      isVisible = entry.isIntersecting;
+    },
+    { rootMargin: '200px' }
+  );
+  io.observe(parent);
+
   const unsub = subscribeTicker((nowMs, dt) => {
-    const rect = parent.getBoundingClientRect();
-    if (rect.bottom < -300 || rect.top > window.innerHeight + 300) return;
+    if (!isVisible) return;
 
     const ready = opts.isIntroReady();
     let introP = 0;
@@ -782,6 +794,7 @@ export function createPlasmaScene(
   return () => {
     unsub();
     ro.disconnect();
+    io.disconnect();
     window.removeEventListener('pointermove', onPointerMove);
     lineGeo.dispose();
     lineMat.dispose();
@@ -812,7 +825,7 @@ export function createChromeModelScene(
     antialias: true,
     alpha: true,
   });
-  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
   renderer.setPixelRatio(dpr);
   renderer.setClearColor(0x000000, 0);
   renderer.outputEncoding = THREE.sRGBEncoding;
@@ -899,7 +912,7 @@ export function createChromeModelScene(
     const rect = parent.getBoundingClientRect();
     const w = Math.max(1, rect.width || window.innerWidth);
     const h = Math.max(1, rect.height || window.innerHeight);
-    const pr = Math.min(window.devicePixelRatio || 1, 2);
+    const pr = Math.min(window.devicePixelRatio || 1, 1.5);
     renderer.setPixelRatio(pr);
     renderer.setSize(w, h, false);
     camera.aspect = w / h;
@@ -911,16 +924,24 @@ export function createChromeModelScene(
   const ro = new ResizeObserver(resize);
   ro.observe(parent);
 
+  let isModelVisible = true;
+  const io = new IntersectionObserver(
+    ([entry]) => {
+      isModelVisible = entry.isIntersecting;
+    },
+    { rootMargin: '250px' }
+  );
+  io.observe(parent);
+
   let lastScroll = getScrollY();
   let spinVel = 0;
 
   const unsub = subscribeTicker(() => {
+    if (!isModelVisible) return;
+
     const curScroll = getScrollY();
     const dScroll = curScroll - lastScroll;
     lastScroll = curScroll;
-
-    const rect = parent.getBoundingClientRect();
-    if (rect.bottom < -400 || rect.top > window.innerHeight + 400) return;
 
     const p = clamp01(opts.getFallProgress());
     group.position.y = FALL_TOP + (FALL_BOTTOM - FALL_TOP) * p;
@@ -940,6 +961,8 @@ export function createChromeModelScene(
     disposed = true;
     unsub();
     ro.disconnect();
+    io.disconnect();
+    io.disconnect();
     draco.dispose();
     chromeMat.dispose();
     envTex.dispose();
