@@ -1182,7 +1182,7 @@ export default function App() {
                 </svg>
               </div>
               <div className="card-partnerships-inner">
-                <div className="stat-big-num">50+</div>
+                <div className="stat-big-num">10+</div>
                 <p
                   style={{
                     marginTop: '0.75rem',
